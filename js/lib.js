@@ -204,12 +204,48 @@ function imprimir_tablero () {
 function pintar_recorrido (recorrido) {
 
     for (var posicion = 0; posicion < recorrido.length; posicion++) {
+
         //La logica para pintar según el alfabeto.
     }
 }
 
+function pintar_personaje (columna, fila) {
+    var $personaje = $('#personaje');
+    $('#tablero [fila="' + fila + '"][columna="' + columna + '"]').append($personaje);
+}
+
+function puede_avanzar() {
+    //ToDo: calcular si puede avanzar.
+    return true;
+}
+
+function calcular_siguiente() {
+    var nueva = [0, 0];
+
+    //ToDo: calcular siguiente posición.
+
+    return nueva;
+}
+
+function inicializar_funciones() {
+    $('#siguiente').on('click', function() {
+        var puede = puede_avanzar();
+        var nueva_posicion = calcular_siguiente();
+
+        if (puede) {
+            pintar_personaje(nueva_posicion[0], nueva_posicion[1]);
+        } else {
+            alert('no puede seguir, se chocó contra un muro');
+        }
+    });
+}
+
 function iniciar() {
+
+    inicializar_funciones();
+
     imprimir_tablero();
 
-    pintar_recorrido(recorrido);
+    pintar_personaje(0, 0);
+//    pintar_recorrido(recorrido);
 }

@@ -33,6 +33,11 @@ body {
     justify-content: center;
 }
 
+.casilla img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
 .linea_arriba {
     border-top-width: 5px;
 }
@@ -55,4 +60,8 @@ body {
 
 .final {
     background-color: tomato;
+}
+
+.botonera {
+    text-align: center;
 }
