@@ -4,7 +4,11 @@
         <title>Juego del laberinto - Algoritmos y lógica de programación</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/estilos.css" />
+        <link href="components/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css">
+        
         <script src="js/jquery.js"></script>
+        <script src="components/external/jquery/jquery.js"></script>
+        <script src="components/jquery-ui/jquery-ui.js"></script>
         <script src="js/lib.js"></script>
     </head>
 
@@ -15,8 +19,26 @@
             <div id="tablero">
             </div>
         </div>
+
         <div class="botonera">
+            <button id="abrir" class="btn btn-primary">Definir recorrido</button>
             <button id="siguiente" class="btn btn-primary">Siguiente paso</button>
+        </div>
+
+        <div id="dialog" class="dialog" title="Navegación del laberinto">
+            <div class="recibir_datos">
+                <form method="get">
+                    <p>Selecciona la forma en que nos desplazaremos por el laberinto</p>
+                    <ul>
+                        <li><input type="radio" name="desplazamiento" value="cardinales" /> <label for="cardinales">Puntos cardinales</label></li>
+                        <li><input type="radio" name="desplazamiento" value="izq-der" /> <label for="izq-der">Izquierda - Derecha</label></li>
+                    </ul>
+                    <hr />
+                    <p>Ingresa la ruta que se recorrerá en el laberinto</p>
+                    <textarea name="ruta" placeholder="Ingresa la ruta separando cada paso con comas (,)."></textarea>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
         </div>
     </body>
 </html>

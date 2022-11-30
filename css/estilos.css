@@ -80,3 +80,18 @@ body {
 #escenario > #personaje.error {
     border-color: red;
 }
+
+/*Campo para recibir datos para el movimiento en el laberinto*/
+
+.recibir_datos {
+    background-color: #fff;
+    padding: 30px 10px;
+}
+
+.recibir_datos ul {
+    list-style: none;
+}
+
+.recibir_datos textarea {
+    width: 100%;
+}

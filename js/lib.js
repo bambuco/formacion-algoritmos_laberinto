@@ -438,3 +438,17 @@ function iniciar() {
     //pintar_personaje(0, 0, 0);
 //    pintar_recorrido(recorrido);
 }
+
+
+/*Ventana Modal*/
+$(function () {
+    $(".dialog").dialog({
+        autoOpen: false,
+        modal: true
+    });
+    $("#abrir")
+        .button()
+        .click(function () {            
+            $('#dialog').dialog("open");
+    });
+});
