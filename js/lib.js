@@ -284,9 +284,10 @@ function pintar_personaje (columna, fila, direccion) {
  * @param {array[2]} posicion Es un arreglo con dos enteros que determinan una posición en el laberinto
  * @returns bool False si la posición no es válida para el laberinto
  */
+
 function validar_posicion(posicion) {
-    //ToDo: calcular si puede avanzar.
-    return true;
+    return (posicion[0] <= laberinto.length && posicion[1] <= laberinto.length &&
+             posicion[0] >= 0 && posicion[1] >= 0);
 }
 
 /**
@@ -409,8 +410,16 @@ function mensaje(mensaje, tipo) {
  * @param {*} valor El valor a encontrar.
  * @returns True si se encuentra el valor dentro del arreglo, false en otro caso.
  */
-function existe(arreglo, valor) {
-    //ToDo: definir si valor está en alguna posición del arreglo.
+ function existe(arreglo, valor) {
+
+    for (let i = 0; i < arreglo.length; i++) {
+      const actual = arreglo[i]  
+
+        if (actual == valor) {
+            return true;
+        }
+    }
+
     return false;
 }
 
@@ -419,9 +428,14 @@ function existe(arreglo, valor) {
  * @param {*} valor
  * @returns Bool false si el valor no es un número o es un número no entero.
  */
-function es_entero(valor) {
-    //ToDo: definir si valor es un número y además es entero.
-    return true;
+ function es_entero(valor) {
+
+    if (!Number.isInteger(valor)) {
+        var entero = Math.floor(Number(valor));
+        return String(entero) === valor && entero === valor;
+    } else {
+        return true;
+    }
 }
 
 function iniciar() {
