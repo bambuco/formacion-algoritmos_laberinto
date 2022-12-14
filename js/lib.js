@@ -286,8 +286,10 @@ function pintar_personaje (columna, fila, direccion) {
  */
 
 function validar_posicion(posicion) {
-    return (posicion[0] <= laberinto.length && posicion[1] <= laberinto.length &&
-             posicion[0] >= 0 && posicion[1] >= 0);
+     return posicion[0] < laberinto.length &&
+           posicion[1] < laberinto[0].length &&
+           posicion[0] >= 0 &&
+           posicion[1] >= 0;
 }
 
 /**
@@ -413,7 +415,7 @@ function mensaje(mensaje, tipo) {
  function existe(arreglo, valor) {
 
     for (let i = 0; i < arreglo.length; i++) {
-      const actual = arreglo[i]  
+      let actual = arreglo[i]  
 
         if (actual == valor) {
             return true;
@@ -432,7 +434,7 @@ function mensaje(mensaje, tipo) {
 
     if (!Number.isInteger(valor)) {
         var entero = Math.floor(Number(valor));
-        return String(entero) === valor && entero === valor;
+        return String(entero) === valor;
     } else {
         return true;
     }
