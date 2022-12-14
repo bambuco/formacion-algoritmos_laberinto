@@ -29,7 +29,9 @@ var inicio = [0, 0];
 var fin = [0, 9];
 
 // Modos de giro: cardinal (4 puntos cardinales), sencillo (izquierda o derecha), grados (90°, 180°, 270°).
-var modo_giro = 'grados';
+
+/*var modo_giro = 'grados';*/
+var modo_giro
 
 var laberinto = [
     // Primera fila
@@ -188,9 +190,11 @@ var laberinto = [
     ]
 ];
 
-var recorrido = [
+/*var recorrido = [
     '2', '270°', '1', '270°', '1', '90°', '1', '90°', '1', '270°', '1', '270°', '1', '90°', '1', '90°', '2', '90°', '3', '270°', '1', '90°', '1', '270°', '3', '270°', '1', '270°', '1', '90°', '1', '90°', '5', '270°', '2', '270°', '1', '90°', '1', '270°', '1', '90°', '1', '270°', '1', '90°', '3', '90°', '1', '270°', '1', '270°', '2', '270°', '1', '90°', '1', '90°', '1', '270°', '2', '270°', '1', '90°', '1', '90°', '1', '270°', '1', '270°', '3', '90°', '1', '90°', '2', '270°', '1'
-];
+];*/
+
+var recorrido;
 
 function imprimir_tablero () {
     var $tablero = $('#tablero');
@@ -320,42 +324,89 @@ function inicializar_funciones() {
 
     $('#siguiente').on('click', function() {
 
-        var valor = recorrido[paso];
-        var es_girar = existe(GIROS, valor);
+        if (recorrido == null) {
 
-        if (es_girar) {
-            direccion = nueva_direccion(direccion, valor);
-            console.log(direccion + ' > ' + valor);
-            pintar_personaje(posicion[0], posicion[1], direccion);
-            paso++;
+            mensaje('Debe definir el recorrido');
+
         } else {
 
-            if (es_entero(valor)) {
-                valor = Number(valor); // Para estar seguros que es un número no el texto de un.
-                var nueva_posicion = calcular_siguiente(posicion, direccion, valor);
-                var puede = validar_posicion(nueva_posicion);
+            var valor = recorrido[paso];
+            
+            var es_girar = existe(GIROS, valor);
 
-                if (puede) {
-                    posicion = nueva_posicion;
-                    paso++;
-                    pintar_personaje(posicion[0], posicion[1], direccion);
+            if (es_girar) {
+                direccion = nueva_direccion(direccion, valor);
+                console.log(direccion + ' > ' + valor);
+                pintar_personaje(posicion[0], posicion[1], direccion);
+                paso++;
+            } else {
 
-                    if (fin[0] == nueva_posicion[0] && fin[1] == nueva_posicion[1]) {
-                        mensaje('Felicitaciones, llegó al final');
+                if (es_entero(valor)) {
+                    valor = Number(valor); // Para estar seguros que es un número no el texto de un.
+                    var nueva_posicion = calcular_siguiente(posicion, direccion, valor);
+                    var puede = validar_posicion(nueva_posicion);
+
+                    if (puede) {
+                        posicion = nueva_posicion;
+                        paso++;
+                        pintar_personaje(posicion[0], posicion[1], direccion);
+
+                        if (fin[0] == nueva_posicion[0] && fin[1] == nueva_posicion[1]) {
+                            mensaje('Felicitaciones, llegó al final');
+                            $('#siguiente').prop('disabled', true);
+                        }
+                    } else {
                         $('#siguiente').prop('disabled', true);
+                        pintar_personaje(-1, -1, 0);
+                        mensaje('No puede seguir, se chocó contra un muro', 'error');
                     }
                 } else {
-                    $('#siguiente').prop('disabled', true);
-                    pintar_personaje(-1, -1, 0);
-                    mensaje('No puede seguir, se chocó contra un muro', 'error');
+                    mensaje('El valor: ' + valor + ' es inválido', 'error');
+                    return false;
                 }
-            } else {
-                mensaje('El valor: ' + valor + ' es inválido', 'error');
-                return false;
             }
+
         }
 
+
     });
+
+    
+    /*Ventana Modal*/
+    
+    $(".dialog").dialog({
+        autoOpen: false,
+        modal: true
+    });
+
+    $("#abrir")
+        .button()
+        .click(function () {            
+            $('#dialog').dialog("open");
+        }
+    );
+        
+
+    $('#deficion_recorrido').on('click', function definicion_recorrido() {
+
+        var desplazamiento = $('textarea#recorrido').val();
+        var girando = $('input[name="desplazamiento"]:checked').val();
+
+        desplazamiento = desplazamiento.split(',');
+        
+        recorrido = desplazamiento;
+        modo_giro = girando;
+
+        $('.recorrido').fadeIn(1000);
+        var texto1 = '<p>El modo de giro seleccionado es: ' + modo_giro + '</p>';
+        var texto2 = '<p>El recorrido ingresado es: ' + recorrido + '</p>';
+
+        $('.recorrido').html(texto1+texto2);
+
+        $('#dialog').dialog("close");
+
+    });
+
 }
 
 function nueva_direccion(actual, cambio) {
@@ -424,6 +475,8 @@ function es_entero(valor) {
     return true;
 }
 
+
+
 function iniciar() {
 
     //ToDo: preguntar al usuario qué tipo de giros utiliza, si son de los 4 puntos cardinales
@@ -438,17 +491,3 @@ function iniciar() {
     //pintar_personaje(0, 0, 0);
 //    pintar_recorrido(recorrido);
 }
-
-
-/*Ventana Modal*/
-$(function () {
-    $(".dialog").dialog({
-        autoOpen: false,
-        modal: true
-    });
-    $("#abrir")
-        .button()
-        .click(function () {            
-            $('#dialog').dialog("open");
-    });
-});
