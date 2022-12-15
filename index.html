@@ -24,20 +24,25 @@
             <button id="siguiente" class="btn btn-primary">Siguiente paso</button>
         </div>
 
-        <div id="dialog" class="dialog" title="Navegación del laberinto">
+        <div class="recorrido">
+            <p><strong>El modo de giro seleccionado es: </strong><span id="vista_modo_giro">Sin definir</span></p>
+            <p><strong>El recorrido ingresado es: </strong><span id="vista_recorrido">Sin definir</span></p>
+        </div>
+
+        <div id="dialog_config" class="dialog" title="Navegación del laberinto">
             <div class="recibir_datos">
-                <form method="get">
-                    <p>Selecciona la forma en que nos desplazaremos por el laberinto</p>
-                    <ul>
-                        <li><input type="radio" name="desplazamiento" value="cardinales" id="cardinales" /> <label for="cardinales">Puntos cardinales</label></li>
-                        <li><input type="radio" name="desplazamiento" value="izq-der" id="izq-der" /> <label for="izq-der">Izquierda - Derecha</label></li>
-                    </ul>
-                    <hr />
-                    <p>Ingresa la ruta que se recorrerá en el laberinto</p>
-                    <textarea name="ruta" placeholder="Ingresa la ruta separando cada paso con comas (,)."></textarea>
-                    <button class="btn btn-primary" type="submit">Enviar</button>
-                </form>
+                <p>Selecciona la forma en que nos desplazaremos por el laberinto</p>
+                <ul>
+                    <li><input type="radio" name="desplazamiento" value="cardinal" id="cardinales" checked /> <label for="cardinales">Puntos cardinales</label></li>
+                    <li><input type="radio" name="desplazamiento" value="sencillo" id="izq-der" /> <label for="izq-der">Izquierda - Derecha</label></li>
+                    <li><input type="radio" name="desplazamiento" value="grados" id="grados" /> <label for="grados">Grados</label></li>
+                </ul>
+                <hr />
+                <p>Ingresa la ruta que se recorrerá en el laberinto</p>
+                <textarea id="recorrido" name="ruta" placeholder="Ingresa la ruta separando cada paso con comas (,)." required ></textarea>
+                <button id="deficion_recorrido" class="btn btn-primary" value="Enviar">Enviar</button>
             </div>
         </div>
+
     </body>
 </html>

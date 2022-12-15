@@ -29,7 +29,8 @@ var inicio = [0, 0];
 var fin = [0, 9];
 
 // Modos de giro: cardinal (4 puntos cardinales), sencillo (izquierda o derecha), grados (90°, 180°, 270°).
-var modo_giro = 'grados';
+
+var modo_giro;
 
 var laberinto = [
     // Primera fila
@@ -188,9 +189,7 @@ var laberinto = [
     ]
 ];
 
-var recorrido = [
-    '2', '270°', '1', '270°', '1', '90°', '1', '90°', '1', '270°', '1', '270°', '1', '90°', '1', '90°', '2', '90°', '3', '270°', '1', '90°', '1', '270°', '3', '270°', '1', '270°', '1', '90°', '1', '90°', '5', '270°', '2', '270°', '1', '90°', '1', '270°', '1', '90°', '1', '270°', '1', '90°', '3', '90°', '1', '270°', '1', '270°', '2', '270°', '1', '90°', '1', '90°', '1', '270°', '2', '270°', '1', '90°', '1', '90°', '1', '270°', '1', '270°', '3', '90°', '1', '90°', '2', '270°', '1'
-];
+var recorrido = null;
 
 function imprimir_tablero () {
     var $tablero = $('#tablero');
@@ -320,12 +319,17 @@ function inicializar_funciones() {
 
     $('#siguiente').on('click', function() {
 
+        // Validar si ya se definió el recorrido, sino, no se calcula el siguiente.
+        if (!recorrido || !Array.isArray(recorrido)) {
+            mensaje('Debe definir el recorrido');
+            return;
+        } 
+
         var valor = recorrido[paso];
         var es_girar = existe(GIROS, valor);
 
         if (es_girar) {
             direccion = nueva_direccion(direccion, valor);
-            console.log(direccion + ' > ' + valor);
             pintar_personaje(posicion[0], posicion[1], direccion);
             paso++;
         } else {
@@ -356,6 +360,39 @@ function inicializar_funciones() {
         }
 
     });
+
+    // Convierte todos los elementos con clase "dialog" en una venta modal.
+    $(".dialog").dialog({
+        autoOpen: false,
+        modal: true
+    });
+
+    $("#abrir")
+        .button()
+        .click(function () {            
+            $('#dialog_config').dialog("open");
+        }
+    );
+        
+    $('#deficion_recorrido').on('click', function definicion_recorrido() {
+
+        var desplazamiento = $('textarea#recorrido').val().trim();
+
+        if (!desplazamiento) {
+            mensaje('El recorrido no puede estar vacío');
+            return;
+        }
+
+        desplazamiento = desplazamiento.replace(/\n/g, ",");
+        modo_giro = $('input[name="desplazamiento"]:checked').val();
+        recorrido = desplazamiento.split(',');
+
+        $('#vista_modo_giro').html(modo_giro);
+        $('#vista_recorrido').html(desplazamiento);
+        $('#dialog_config').dialog("close");
+
+    });
+
 }
 
 function nueva_direccion(actual, cambio) {
@@ -424,6 +461,8 @@ function es_entero(valor) {
     return true;
 }
 
+
+
 function iniciar() {
 
     //ToDo: preguntar al usuario qué tipo de giros utiliza, si son de los 4 puntos cardinales
@@ -438,17 +477,3 @@ function iniciar() {
     //pintar_personaje(0, 0, 0);
 //    pintar_recorrido(recorrido);
 }
-
-
-/*Ventana Modal*/
-$(function () {
-    $(".dialog").dialog({
-        autoOpen: false,
-        modal: true
-    });
-    $("#abrir")
-        .button()
-        .click(function () {            
-            $('#dialog').dialog("open");
-    });
-});

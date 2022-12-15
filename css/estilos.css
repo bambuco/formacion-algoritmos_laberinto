@@ -100,3 +100,15 @@ body {
 .ui-widget.ui-widget-content {
     width: 80% !important;
 }
+
+.recorrido {
+    background-color: #fff;
+    width: 80%;
+    margin: 20px auto;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+
+.recorrido p {
+    word-wrap: break-word;
+}
