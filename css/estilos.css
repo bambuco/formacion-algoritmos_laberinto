@@ -112,3 +112,19 @@ body {
 .recorrido p {
     word-wrap: break-word;
 }
+
+#vista_recorrido i {
+    border: 1px solid black;
+    padding: 3px;
+    border-radius: 2px;
+    margin: 2px;
+    display: inline-block;
+    font-style: normal;
+    line-height: 12px;
+}
+
+#vista_recorrido i.actual {
+    border-color: red;
+    background-color: darkred;
+    color: #fff;
+}

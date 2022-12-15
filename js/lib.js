@@ -283,7 +283,6 @@ function pintar_personaje (columna, fila, direccion) {
  * @param {array[2]} posicion Es un arreglo con dos enteros que determinan una posición en el laberinto
  * @returns bool False si la posición no es válida para el laberinto
  */
-
 function validar_posicion(posicion) {
      return posicion[0] < laberinto.length &&
            posicion[1] < laberinto[0].length &&
@@ -326,10 +325,23 @@ function inicializar_funciones() {
         if (!recorrido || !Array.isArray(recorrido)) {
             mensaje('Debe definir el recorrido');
             return;
-        } 
+        }
 
         var valor = recorrido[paso];
         var es_girar = existe(GIROS, valor);
+
+        var texto_recorrido = '';
+
+        for (var k = 0; k < recorrido.length; k++) {
+            let clase = '';
+            if (k == paso) {
+                clase = 'actual';
+            }
+
+            texto_recorrido += '<i class="' + clase + '">' + recorrido[k] + '</i>';
+        }
+
+        $('#vista_recorrido').html(texto_recorrido);
 
         if (es_girar) {
             direccion = nueva_direccion(direccion, valor);
@@ -372,11 +384,11 @@ function inicializar_funciones() {
 
     $("#abrir")
         .button()
-        .click(function () {            
+        .click(function () {
             $('#dialog_config').dialog("open");
         }
     );
-        
+
     $('#deficion_recorrido').on('click', function definicion_recorrido() {
 
         var desplazamiento = $('textarea#recorrido').val().trim();
@@ -386,6 +398,7 @@ function inicializar_funciones() {
             return;
         }
 
+        desplazamiento = desplazamiento.toLowerCase();
         desplazamiento = desplazamiento.replace(/\n/g, ",");
         modo_giro = $('input[name="desplazamiento"]:checked').val();
         recorrido = desplazamiento.split(',');
@@ -412,6 +425,11 @@ function nueva_direccion(actual, cambio) {
             for (var k = 0; k < GIROS_SENCILLO.length; k++) {
                 if (existe(GIROS_SENCILLO[k], cambio)) {
                     var nueva = actual + (k * 2) - 1;
+
+                    if (nueva < 0) {
+                        nueva = 4 + nueva;
+                    }
+
                     return nueva % 4;
                 }
             }
@@ -452,7 +470,7 @@ function mensaje(mensaje, tipo) {
  function existe(arreglo, valor) {
 
     for (let i = 0; i < arreglo.length; i++) {
-      let actual = arreglo[i]  
+      let actual = arreglo[i]
 
         if (actual == valor) {
             return true;
@@ -476,8 +494,6 @@ function mensaje(mensaje, tipo) {
         return true;
     }
 }
-
-
 
 function iniciar() {
 
