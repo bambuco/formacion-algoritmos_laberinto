@@ -29,13 +29,12 @@ var inicio = [0, 0];
 var fin = [0, 9];
 
 // Modos de giro: cardinal (4 puntos cardinales), sencillo (izquierda o derecha), grados (90°, 180°, 270°).
-
 var modo_giro;
 
 var laberinto = [
     // Primera fila
     [
-        [1, 0, 1, 1],
+        [1, 0, 1, 0],
         [1, 0, 0, 0],
         [1, 1, 1, 0],
         [1, 0, 0, 1],
@@ -197,7 +196,7 @@ function imprimir_tablero () {
     for (var fila = 0; fila < laberinto.length; fila++) {
         for (var columna = 0; columna < laberinto[0].length; columna++) {
             var $celda = $('<div class="casilla"></div>');
-            $celda.html(columna + ' - ' + fila);
+            $celda.html(fila + ' - ' + columna);
 
             $celda.attr('fila', fila);
             $celda.attr('columna', columna);
@@ -308,40 +307,47 @@ function calcular_siguiente(posicion_actual, direccion, paso) {
     // mayor o igual a 2 es derecha o arriba entonces retrocede.
     var orientacion = direccion < 2 ? 1 : -1;
 
-    posicion_actual[sentido] = posicion_actual[sentido] + (paso * orientacion);
+    var nueva = [posicion_actual[0], posicion_actual[1]];
+
+    nueva[sentido] = posicion_actual[sentido] + (paso * orientacion);
 
     //ToDo: calcular siguiente posición.
-    return posicion_actual;
+    return nueva;
 }
 
 function inicializar_funciones() {
-    var posicion = [-1, 0];
+    var posicion = [0, 0];
     var paso = 0;
     var direccion = 0;
 
     $('#siguiente').on('click', function() {
 
+        var automatico = false;
         // Validar si ya se definió el recorrido, sino, no se calcula el siguiente.
         if (!recorrido || !Array.isArray(recorrido)) {
-            mensaje('Debe definir el recorrido');
-            return;
+            //mensaje('Debe definir el recorrido');
+            //return;
+            automatico = true;
         }
 
-        var valor = recorrido[paso];
+        var valor = automatico ? predecir_paso(posicion, direccion) : recorrido[paso];
+
         var es_girar = existe(GIROS, valor);
 
         var texto_recorrido = '';
 
-        for (var k = 0; k < recorrido.length; k++) {
-            let clase = '';
-            if (k == paso) {
-                clase = 'actual';
+        if (!automatico) {
+            // Pintamos el recorrido que ingresó el usuario, paso por paso.
+            for (var k = 0; k < recorrido.length; k++) {
+                let clase = '';
+                if (k == paso) {
+                    clase = 'actual';
+                }
+
+                texto_recorrido += '<i class="' + clase + '">' + recorrido[k] + '</i>';
             }
-
-            texto_recorrido += '<i class="' + clase + '">' + recorrido[k] + '</i>';
+            $('#vista_recorrido').html(texto_recorrido);
         }
-
-        $('#vista_recorrido').html(texto_recorrido);
 
         if (es_girar) {
             direccion = nueva_direccion(direccion, valor);
@@ -352,7 +358,8 @@ function inicializar_funciones() {
             if (es_entero(valor)) {
                 valor = Number(valor); // Para estar seguros que es un número no el texto de un.
                 var nueva_posicion = calcular_siguiente(posicion, direccion, valor);
-                var puede = validar_posicion(nueva_posicion);
+                var puede = validar_posicion(nueva_posicion)
+                                && puede_mover(posicion, nueva_posicion, direccion);
 
                 if (puede) {
                     posicion = nueva_posicion;
@@ -495,6 +502,57 @@ function mensaje(mensaje, tipo) {
     }
 }
 
+function puede_mover(posicion, nueva_posicion, direccion) {
+
+    var celda;
+    var puede = true;
+
+    orientacion = direccion < 3 ? direccion + 1 : 0;
+
+    console.log(direccion);
+
+    var i, j;
+    for (var k = posicion[direccion % 2]; k < nueva_posicion[direccion % 2]; k++) {
+
+        i = 0;
+        j = 0;
+        switch(direccion) {
+            case 0:
+                j = j + k;
+                i = posicion[1];
+                break;
+            case 1:
+                i = i + k;
+                j = posicion[0];
+                break;
+            case 2:
+                j = j - k;
+                i = posicion[1];
+                break;
+            case 3:
+                i = i - k;
+                j = posicion[0];
+                break;
+        }
+
+        celda = laberinto[i][j];
+
+        if (celda[orientacion] == 1) {
+            puede = false;
+            break;
+        }
+    }
+
+    return puede;
+}
+
+function predecir_paso(posicion, direccion) {
+    modo_giro = 'sencillo';
+
+    //ToDo: implementar esta función.
+    return 2;
+}
+
 function iniciar() {
 
     //ToDo: preguntar al usuario qué tipo de giros utiliza, si son de los 4 puntos cardinales
@@ -506,6 +564,6 @@ function iniciar() {
 
     imprimir_tablero();
 
-    //pintar_personaje(0, 0, 0);
+    pintar_personaje(0, 0, 0);
 //    pintar_recorrido(recorrido);
 }

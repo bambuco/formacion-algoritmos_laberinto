@@ -11,7 +11,7 @@ body {
 }
 
 #tablero {
-    border: 5px solid springgreen;
+    /* border: 5px solid springgreen; */
     width: 560px;
     height: 560px;
     float: right;
