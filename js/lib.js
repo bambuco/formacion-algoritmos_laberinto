@@ -550,7 +550,7 @@ function predecir_paso(posicion, direccion) {
     modo_giro = 'sencillo';
 
     //ToDo: implementar esta función.
-    return 2;
+    return 1;
 }
 
 function iniciar() {

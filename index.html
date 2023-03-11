@@ -5,31 +5,35 @@
         <link rel="stylesheet" href="css/bootstrap.min.css" />
         <link rel="stylesheet" href="css/estilos.css" />
         <link href="components/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css">
-        
+
         <script src="js/jquery.js"></script>
         <script src="components/jquery-ui/jquery-ui.js"></script>
-        <script src="js/lib.js"></script>
+        <!--script src="js/lib.js"></script-->
+        <script src="js/util.class.js"></script>
+        <script src="js/laberinto.class.js"></script>
+        <script src="js/main.js"></script>
     </head>
 
-    <body onload="iniciar();">
+    <body onload="main();">
 
+        <!--img class="personaje" src="resources/cicla.png" owner="2" /-->
         <div id="escenario">
-            <img id="personaje" src="resources/cicla.png" />
-            <div id="tablero">
-            </div>
+            <div id="tablero1"></div>
+            <div id="tablero2"></div>
+            <div id="tablero3"></div>
         </div>
 
-        <div class="botonera">
+        <!--div class="botonera">
             <button id="abrir" class="btn btn-primary">Definir recorrido</button>
             <button id="siguiente" class="btn btn-primary">Siguiente paso</button>
-        </div>
+        </div-->
 
-        <div class="recorrido">
+        <!--div class="recorrido">
             <p><strong>El modo de giro seleccionado es: </strong><span id="vista_modo_giro">Sin definir</span></p>
             <p><strong>El recorrido ingresado es: </strong><span id="vista_recorrido">Sin definir</span></p>
-        </div>
+        </div-->
 
-        <div id="dialog_config" class="dialog" title="Navegación del laberinto">
+        <!--div id="dialog_config" class="dialog" title="Navegación del laberinto">
             <div class="recibir_datos">
                 <p>Selecciona la forma en que nos desplazaremos por el laberinto</p>
                 <ul>
@@ -42,7 +46,7 @@
                 <textarea id="recorrido" name="ruta" placeholder="Ingresa la ruta separando cada paso con comas (,)." required ></textarea>
                 <button id="deficion_recorrido" class="btn btn-primary" value="Enviar">Enviar</button>
             </div>
-        </div>
+        </div-->
 
     </body>
 </html>
