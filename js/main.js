@@ -1,34 +1,19 @@
 function main() {
 
     var lab;
-    var lab2;
-    var lab3;
+    var ancho = 3;
+    var alto = 3;
 
     try {
-        lab = new laberinto([[[1, 1, 1, 1]]], [0, 0], [0, 9]);
-        lab.imprimir_tablero('#tablero1');
-    } catch (e) {
-        console.log('El laberinto lab está mal construido, razón: ' + e.message);
-    } finally {
-        console.log('Terminó lab');
-    }
+        var rutas = laberinto.aleatorio(ancho, alto);
+        lab = new laberinto(rutas, [0, 0], [ancho - 1, alto - 1]);
+        lab.imprimir_tablero('#tablero3');
 
-    try {
-        lab2 = new laberinto([[[1, 1, 1, 1]]]);
-        lab2.imprimir_tablero('#tablero2');
+        lab.buscar_salida();
     } catch (e) {
-        console.log('El laberinto lab2 está mal construido, razón: ' + e.message);
+        console.log('El laberinto está mal construido, razón: ' + e.message);
     } finally {
-        console.log('Terminó lab2');
-    }
-
-    try {
-        lab3 = new laberinto([[[1, 0, 1, 1], [1, 1, 1, 0]]], [0, 0], [0, 1]);
-        lab3.imprimir_tablero('#tablero3');
-    } catch (e) {
-        console.log('El laberinto lab3 está mal construido, razón: ' + e.message);
-    } finally {
-        console.log('Terminó lab3');
+        console.log('Terminó');
     }
 
 }

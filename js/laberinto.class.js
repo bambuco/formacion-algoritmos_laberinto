@@ -54,7 +54,9 @@ class laberinto {
     imprimir_tablero (destino) {
         this.$tablero = $(destino);
 
+        var $fila;
         for (var fila = 0; fila < this.mapa.length; fila++) {
+            $fila = $('<div class="fila"></div>');
             for (var columna = 0; columna < this.mapa[0].length; columna++) {
                 var $celda = $('<div class="casilla"></div>');
                 $celda.html(fila + ' - ' + columna);
@@ -78,8 +80,9 @@ class laberinto {
                     $celda.addClass('linea_izquierda');
                 }
 
-                this.$tablero.append($celda);
+                $fila.append($celda);
             }
+            this.$tablero.append($fila);
         }
 
         this.$tablero.find('[fila="' + this.inicio[0] + '"][columna="' + this.inicio[1] + '"]').addClass('inicio');
@@ -157,5 +160,59 @@ class laberinto {
               posicion[1] < this.mapa[0].length &&
               posicion[0] >= 0 &&
               posicion[1] >= 0;
+    }
+
+    /**
+     * Busca algorítmicamente una salida para el laberinto.
+     *
+     * @returns True Si encontró salida, false en otro caso.
+     */
+    buscar_salida() {
+        return false;
+    }
+
+    static aleatorio(filas, columnas) {
+
+        var matriz = [];
+        var muroderecho;
+        var muroabajo = [];
+        var esmuro;
+
+        for (var fila = 0; fila < filas; fila++) {
+            matriz[fila] = [];
+            muroderecho = 1;
+
+            for (var columna = 0; columna < columnas; columna++) {
+                matriz[fila][columna] = [];
+
+                for (var celda = 0; celda < 4; celda++) {
+
+                    if (celda == 3) {
+                        matriz[fila][columna][celda] = muroderecho;
+                    } else if (celda == 0) {
+                        if (typeof muroabajo[columna] != 'undefined') {
+                            matriz[fila][columna][celda] = muroabajo[columna];
+                        } else {
+                            matriz[fila][columna][celda] = 1;
+                        }
+                    } else {
+                        esmuro = Math.random() > 0.7;
+                        matriz[fila][columna][celda] = esmuro;
+                    }
+
+                }
+
+                muroderecho = matriz[fila][columna][1];
+                muroabajo[columna] = matriz[fila][columna][2];
+
+                if (fila == (filas - 1)) {
+                    matriz[fila][columna][2] = 1;
+                }
+            }
+
+            matriz[fila][columnas - 1][1] = 1;
+        }
+
+        return matriz;
     }
 }
