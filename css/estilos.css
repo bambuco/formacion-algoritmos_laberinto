@@ -47,6 +47,10 @@ body {
     position: absolute;
 }
 
+.casilla.posible {
+    background-color: rgba(103, 27, 202, 0.5);
+}
+
 .linea_arriba {
     border-top-width: 5px;
 }
@@ -63,12 +67,16 @@ body {
     border-left-width: 5px;
 }
 
-.inicio {
+.casilla.inicio {
     background-color: blue;
 }
 
-.final {
+.casilla.final {
     background-color: tomato;
+}
+
+.casilla.final.posible {
+    background-color: cyan;
 }
 
 .botonera {

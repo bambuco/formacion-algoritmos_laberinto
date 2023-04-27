@@ -163,6 +163,68 @@ class laberinto {
     }
 
     /**
+     * Pintar las casillas del laberinto que se pueden recorrer desde el inicio.
+     */
+    pintar_posibles() {
+
+        var posibles = [];
+        posibles[0] = [this.inicio[0], this.inicio[1]];
+        this.buscar_posibles(this.inicio[0], this.inicio[1], posibles);
+        var $posible;
+
+        for (var i = 0; i < posibles.length; i++) {
+            $posible = this.$tablero.find('[fila="' + posibles[i][1] + '"][columna="' + posibles[i][0] + '"]');
+            $posible.addClass('posible');
+        }
+    }
+
+    /**
+     * Determina las posiciones que se pueden recorrer desde una posición dada.
+     */
+    buscar_posibles(columna, fila, posibles) {
+
+        var nuevafila, nuevacolumna, visitada;
+
+        for (var i = 0; i < 4; i++) {
+
+            if (!this.mapa[fila][columna][i]) {
+                nuevafila = fila;
+                nuevacolumna = columna;
+
+                switch (i) {
+                    case 0:
+                        nuevafila--;
+                        break;
+                    case 1:
+                        nuevacolumna++;
+                        break;
+                    case 2:
+                        nuevafila++;
+                        break;
+                    case 3:
+                        nuevacolumna--;
+                        break;
+                }
+
+                visitada = false;
+                posibles.forEach(element => {
+                    if (element[0] == nuevacolumna && element[1] == nuevafila) {
+                        visitada = true;
+                    }
+                });
+
+                if (visitada) {
+                    continue;
+                }
+
+                posibles.push([nuevacolumna, nuevafila]);
+                this.buscar_posibles(nuevacolumna, nuevafila, posibles);
+            }
+        }
+
+    }
+
+    /**
      * Busca algorítmicamente una salida para el laberinto.
      *
      * @returns True Si encontró salida, false en otro caso.
